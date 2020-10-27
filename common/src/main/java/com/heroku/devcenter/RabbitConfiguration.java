@@ -17,13 +17,14 @@ import static java.lang.System.getenv;
 @Configuration
 public class RabbitConfiguration {
 
-    protected final String helloWorldQueueName = "hello.world.queue";
+    protected final String hdcCrmQueueName = "hdc.crm.queue";
 
     @Bean
     public ConnectionFactory connectionFactory() {
         final URI ampqUrl;
         try {
             ampqUrl = new URI(getEnvOrThrow("CLOUDAMQP_URL"));
+            System.out.println("# ampqUrl : " + ampqUrl);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -34,6 +35,12 @@ public class RabbitConfiguration {
         factory.setHost(ampqUrl.getHost());
         factory.setPort(ampqUrl.getPort());
         factory.setVirtualHost(ampqUrl.getPath().substring(1));
+
+        System.out.println(ampqUrl.getUserInfo().split(":")[0]);
+        System.out.println(ampqUrl.getUserInfo().split(":")[1]);
+        System.out.println(ampqUrl.getHost());
+        System.out.println(ampqUrl.getPort());
+        System.out.println(ampqUrl.getPath().substring(1));
 
         return factory;
     }
@@ -46,14 +53,14 @@ public class RabbitConfiguration {
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
-        template.setRoutingKey(this.helloWorldQueueName);
-        template.setQueue(this.helloWorldQueueName);
+        template.setRoutingKey(this.hdcCrmQueueName);
+        template.setQueue(this.hdcCrmQueueName);
         return template;
     }
 
     @Bean
     public Queue queue() {
-        return new Queue(this.helloWorldQueueName);
+        return new Queue(this.hdcCrmQueueName);
     }
 
     private static String getEnvOrThrow(String name) {
