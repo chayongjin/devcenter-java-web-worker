@@ -41,9 +41,13 @@ public class BigOperationWebController {
         ApplicationContext context = new AnnotationConfigApplicationContext(RabbitConfiguration.class);
         AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class);
         //amqpTemplate.convertAndSend(bigOp);
-        amqpTemplate.convertSendAndReceive("action1", bigOp);
+        Object msg = amqpTemplate.convertSendAndReceive("hdc.crm.queue", bigOp);
 
         System.out.println("Sent to RabbitMQ: " + bigOp);
+
+        System.out.println("receive to RabbitMQ: " + msg);
+
+
 
         // Send the bigOp back to the confirmation page for displaying details in view
         map.put("bigOp", bigOp);
