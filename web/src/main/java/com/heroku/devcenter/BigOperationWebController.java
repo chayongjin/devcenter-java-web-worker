@@ -37,16 +37,26 @@ public class BigOperationWebController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String process(@ModelAttribute("bigOp") BigOperation bigOp, Map<String,Object> map) {
-        // Receives the bigOp from the form submission, converts to a message, and sends to RabbitMQ.
-        ApplicationContext context = new AnnotationConfigApplicationContext(RabbitConfiguration.class);
+
+    	// Receives the bigOp from the form submission, converts to a message, and sends to RabbitMQ.
+
+    	ApplicationContext context = new AnnotationConfigApplicationContext(RabbitConfiguration.class);
+
         AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class);
-        //amqpTemplate.convertAndSend(bigOp);
+
+        amqpTemplate.convertAndSend(bigOp);
+
         Object msg = amqpTemplate.convertSendAndReceive("hdc.crm.queue", bigOp);
 
         System.out.println("Sent to RabbitMQ: " + bigOp);
 
         System.out.println("receive to RabbitMQ: " + msg);
 
+        ApplicationContext context2 = new AnnotationConfigApplicationContext(RabbitConfiguration2.class);
+
+        AmqpTemplate amqpTemplate2 = context2.getBean(AmqpTemplate.class);
+
+        amqpTemplate2.convertAndSend(bigOp);
 
 
         // Send the bigOp back to the confirmation page for displaying details in view

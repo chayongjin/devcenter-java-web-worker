@@ -15,9 +15,9 @@ import java.net.URISyntaxException;
 import static java.lang.System.getenv;
 
 @Configuration
-public class RabbitConfiguration {
+public class RabbitConfiguration2 {
 
-    protected final String hdcCrmQueueName = "hdc.crm.queue";
+    protected final String hdcCrmQueueName = "hdc.crm.queue2";
 
     @Bean
     public ConnectionFactory connectionFactory() {
