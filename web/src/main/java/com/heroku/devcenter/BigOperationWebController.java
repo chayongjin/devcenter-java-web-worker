@@ -40,12 +40,14 @@ public class BigOperationWebController {
         // Receives the bigOp from the form submission, converts to a message, and sends to RabbitMQ.
         ApplicationContext context = new AnnotationConfigApplicationContext(RabbitConfiguration.class);
         AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class);
-        amqpTemplate.convertAndSend(bigOp);
+        //amqpTemplate.convertAndSend(bigOp);
+        amqpTemplate.convertSendAndReceive("action1", bigOp);
 
         System.out.println("Sent to RabbitMQ: " + bigOp);
 
         // Send the bigOp back to the confirmation page for displaying details in view
         map.put("bigOp", bigOp);
+
         return "bigOpReceivedConfirmation";
     }
 }
