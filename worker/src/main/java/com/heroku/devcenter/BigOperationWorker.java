@@ -59,7 +59,7 @@ public class BigOperationWorker {
         listenerContainer.start();
         System.out.println("BigOperationWorker started");
 
-        ////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         final ApplicationContext rabbitConfig2 = new AnnotationConfigApplicationContext(RabbitConfiguration2.class);
         final ConnectionFactory rabbitConnectionFactory2 = rabbitConfig2.getBean(ConnectionFactory.class);

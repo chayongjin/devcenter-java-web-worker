@@ -40,18 +40,16 @@ public class BigOperationWebController {
 
     	// Receives the bigOp from the form submission, converts to a message, and sends to RabbitMQ.
 
+    	System.out.println("Sent to RabbitMQ: " + bigOp);
+
+    	// 첫번째 queue
     	ApplicationContext context = new AnnotationConfigApplicationContext(RabbitConfiguration.class);
 
         AmqpTemplate amqpTemplate = context.getBean(AmqpTemplate.class);
 
         amqpTemplate.convertAndSend(bigOp);
 
-        Object msg = amqpTemplate.convertSendAndReceive("hdc.crm.queue", bigOp);
-
-        System.out.println("Sent to RabbitMQ: " + bigOp);
-
-        System.out.println("receive to RabbitMQ: " + msg);
-
+        // 두번째 queue
         ApplicationContext context2 = new AnnotationConfigApplicationContext(RabbitConfiguration2.class);
 
         AmqpTemplate amqpTemplate2 = context2.getBean(AmqpTemplate.class);
